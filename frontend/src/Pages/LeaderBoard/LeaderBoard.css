@@ -1,0 +1,271 @@
+/* Page */
+.leaderboard-page {
+  min-height: 100vh;
+  background: #1b1b1b;
+  color: #cfcfcf;
+  padding: 80px 20px 40px;
+  font-family: system-ui, sans-serif;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* CONTROL BAR */
+.control-bar {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.control-bar h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.leaderboard-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.leaderboard-actions button {
+  background: transparent;
+  border: 1px solid #2d2d2d;
+  color: #cfcfcf;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.leaderboard-actions button.active {
+  background: #ffa116;
+  border-color: #ffa116;
+  color: #ffffff;
+}
+
+.sync-btn {
+  border-color: #ffa116;
+  color: #ffa116;
+}
+
+/* PODIUM */
+.podium {
+  max-width: 1100px;
+  margin: 0 auto 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.podium-card {
+  background: #2d2d2d;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.podium-rank {
+  color: #ffa116;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.podium-user {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.podium-score {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* RANK LIST */
+.leaderboard-list {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaderboard-row {
+  background: #2d2d2d;
+  padding: 12px 16px;
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: 60px 1fr 120px;
+  align-items: center;
+}
+
+.leaderboard-row:hover {
+  background: #282828;
+}
+
+/* CSS for headline */
+.leaderboard-row.headline {
+  background: #282828;          /* Slight contrast from rows */
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: #cfcfcf;
+  cursor: default;
+}
+
+/* Disable hover effect on headline */
+.leaderboard-row.headline:hover {
+  background: #282828;
+}
+
+/* Align header text properly */
+.leaderboard-row.headline .rank {
+  text-align: left;
+}
+
+.leaderboard-row.headline .score {
+  text-align: right;
+}
+
+/*Ends here*/
+.rank {
+  font-weight: 600;
+}
+
+.user {
+  font-weight: 500;
+}
+
+.score {
+  text-align: right;
+  font-weight: 600;
+}
+
+
+/* changed 1 times */
+/* =========================
+   RESPONSIVE
+========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .leaderboard-page {
+    padding: 70px 16px 32px;
+  }
+
+  .control-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .leaderboard-actions {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .leaderboard-actions button {
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+
+  .podium {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .control-bar h2 {
+    font-size: 20px;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 50px 1fr 90px;
+    padding: 10px 12px;
+  }
+
+  .leaderboard-row.headline {
+    font-size: 12px;
+  }
+
+  .rank {
+    font-size: 13px;
+  }
+
+  .user {
+    font-size: 14px;
+  }
+
+  .score {
+    font-size: 14px;
+  }
+
+  .podium-card {
+    padding: 16px;
+  }
+
+  .podium-score {
+    font-size: 16px;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 400px) {
+  .leaderboard-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .leaderboard-actions button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 40px 1fr 70px;
+  }
+}
+
+.sync-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.last-synced {
+  font-size: 12px;
+  color: #9a9a9a;
+  margin-top: 2px;
+}
+.profile-link {
+  text-decoration: none;
+  color: #ffffff;
+  transition: 0.2s ease;
+}
+
+.profile-link:hover {
+  color: #f59e0b; /* brand orange */
+  cursor: pointer;
+}
+
+.current-user {
+  border: 2px solid #f59e0b;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.12),
+    rgba(245, 158, 11, 0.05)
+  );
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+}
+
+.leaderboard-row {
+  transition: 0.2s ease;
+}
+
+.leaderboard-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
