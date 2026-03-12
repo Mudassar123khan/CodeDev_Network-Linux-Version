@@ -9,7 +9,7 @@ import Spinner from "../../components/Spinner/Spinner.jsx";
 
 export default function ProblemDetails() {
   //fetching url from context api
-  const { url,token } = useContext(Context);
+  const { url, token } = useContext(Context);
 
   //use params hook to extract slug from the url
   const { slug } = useParams();
@@ -23,22 +23,27 @@ export default function ProblemDetails() {
   //state variable for loader
   const [loading, setLoading] = useState(true);
 
+  //state variables for storing the status of code and result of the code 
+  const [verdict, setVerdict] = useState(null);
+  const [output, setOutput] = useState("");
+  const [running, setRunning] = useState(false);
+
   //function to call the problem details api
   const fetchProblemDetails = async () => {
-  try {
-    setLoading(true);
-    const response = await fetchOneProblemAPI(url, slug);
-    setProblemDetail(response);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      setLoading(true);
+      const response = await fetchOneProblemAPI(url, slug);
+      setProblemDetail(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const boilerplates = {
-    java: `class Main {\n    public static void main(String[] args) {\n    }\n}`,
-    cpp: `#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n}`,
+    java: `class Main {\n    public static void main(String[] args) {\n\n    }\n}`,
+    cpp: `#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n\n}`,
     python: `def solve():\n    pass`,
   };
 
@@ -53,20 +58,35 @@ export default function ProblemDetails() {
   }, [slug]);
 
   //submit button handler
-  const submitHandler =async ()=>{
+  const submitHandler = async () => {
+  try {
+    setRunning(true);
+
     const payload = {
       problemId: problemDetail._id,
       code,
       language
-    }
-    const response = await createSubmission(url,payload,token);
+    };
+
+    const response = await createSubmission(url, payload, token);
+
+    setVerdict(response.verdict);
+    setOutput(`Execution Time: ${response.executionTime}s`);
+
+  } catch (error) {
+    console.error(error);
+    setVerdict("Error");
+    setOutput("Something went wrong");
+  } finally {
+    setRunning(false);
   }
+};  
 
 
   // Spinner
   if (loading) {
-  return <Spinner fullPage />;
-}
+    return <Spinner fullPage />;
+  }
 
   return (
     <div className="problem-details">
@@ -109,10 +129,20 @@ export default function ProblemDetails() {
           </div>
         </div>
         <div className="editor-info">
-        Code execution is under development. You will be able to run and
+          Code execution is under development. You will be able to run and
           submit solutions soon.
         </div>
         <CodeEditor language={language} code={code} setCode={setCode} />
+      </div>
+      <div className="execution-result">
+        {running && <p>Running...</p>}
+
+        {verdict && !running && (
+          <>
+            <h3>Verdict: {verdict}</h3>
+            <pre>{output}</pre>
+          </>
+        )}
       </div>
     </div>
   );

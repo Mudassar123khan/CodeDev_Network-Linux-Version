@@ -125,6 +125,21 @@
   border-left: 3px solid #cfcfcf;
 }
 
+/* ========================
+  Code runner result
+============================*/
+.execution-result {
+  margin-top: 10px;
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.execution-result pre {
+  white-space: pre-wrap;
+}
+
 /* =========================
    RESPONSIVE
 ========================= */

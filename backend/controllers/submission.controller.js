@@ -38,42 +38,68 @@ const createSubmission = async (req, res) => {
 
     const language_id = languageMap[language];
 
-    const judgeResponse = await axios.post(
-      JUDGE0_URL,
-      {
-        source_code: code,
-        language_id
-      },
-      {
-        headers: {
-          "Content-Type": "application/json"
+    if (!language_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Unsupported language"
+      });
+    }
+
+    let verdict = "AC";
+    let executionTime = 0;
+
+    for (const testcase of problem.testCases) {
+
+      const judgeResponse = await axios.post(
+        JUDGE0_URL,
+        {
+          source_code: code,
+          language_id,
+          stdin: testcase.input
+        },
+        {
+          headers: { "Content-Type": "application/json" }
         }
+      );
+
+      const result = judgeResponse.data;
+
+      executionTime = Math.max(executionTime, result.time || 0);
+
+      // judge runtime/compile errors
+      if (result.status.description !== "Accepted") {
+        verdict = mapJudge0Verdict(result.status.description);
+        break;
       }
-    );
 
-    const result = judgeResponse.data;
+      // compare outputs
+      const actualOutput = (result.stdout || "").trim();
+      const expectedOutput = testcase.output.trim();
 
-    //mapping verdict
-    const verdict = mapJudge0Verdict(result.status.description);
+      if (actualOutput !== expectedOutput) {
+        verdict = "WA";
+        break;
+      }
+    }
 
-    //creating submission
     const newSubmission = await Submission.create({
       userId,
       problemId,
       code,
       language,
       verdict,
-      executionTime: result.time || "0"
+      executionTime
     });
 
     res.status(201).json({
       success: true,
-      judge0Response: result,
+      verdict,
+      executionTime,
       submission: newSubmission
     });
 
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
 
     res.status(500).json({
       success: false,
